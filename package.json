@@ -12,11 +12,11 @@
   "author": "ishiduca@gmail.com",
   "license": "Apache-2.0",
   "dependencies": {
+    "@ishiduca/snoopy": "0.0.1",
     "defined": "^1.0.0",
     "mississippi": "^3.0.0"
   },
   "devDependencies": {
-    "@ishiduca/snoopy": "0.0.1",
     "budo": "^11.2.0",
     "bulma": "^0.7.1",
     "es2040": "^1.2.6",

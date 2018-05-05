@@ -1,5 +1,5 @@
-var missi = require('mississippi')
 var defined = require('defined')
+var snoop = require('@ishiduca/snoopy')
 
 module.exports = compose
 
@@ -8,7 +8,10 @@ function compose (apps, template) {
     init: function () {
       return composeState(
         apps.map(function (app) {
-          return defined(app.init(), {model: null})
+          return defined(
+            defined(app.init, snoop.defaults.init).call(app),
+            {model: null}
+          )
         })
       )
     },
@@ -17,7 +20,10 @@ function compose (apps, template) {
         apps.map(function (app, i) {
           return typeof actions[i] === 'undefined'
             ? {model: models[i]}
-            : defined(app.update(models[i], actions[i]), {model: models[i]})
+            : defined(
+              defined(app.update, snoop.defaults.update).call(app, models[i], actions[i]),
+              {model: models[i]}
+            )
         })
       )
     },
@@ -29,22 +35,23 @@ function compose (apps, template) {
       }
       return template(
         apps.map(function (app, i) {
-          return app.view(models[i], aup(i))
+          return defined(app.view, snoop.defaults.view).call(app, models[i], aup(i))
         })
       )
     },
     run: function (effects, sources) {
       if (effects == null) return
-      var many = missi.through.obj()
+      var many = snoop.through.obj()
       var actionsSources = []
       apps.forEach(function (app, i) {
         var actionsSource
+        var run = defined(app.run, snoop.defaults.run)
         if (effects[i] == null) return
-        if ((actionsSource = app.run(effects[i], sources)) == null) return
+        if ((actionsSource = run.call(app, effects[i], sources)) == null) return
         actionsSources.push(actionsSource)
-        missi.pipe(
+        snoop.pipe(
           actionsSource,
-          missi.through.obj(function (action, _, done) {
+          snoop.through.obj(function (action, _, done) {
             many.write(apps.map(function (x) { return action }))
             done()
           }),
