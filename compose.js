@@ -5,7 +5,7 @@ module.exports = compose
 
 function compose (apps, template) {
   return {
-    init: function () {
+    init () {
       return composeState(
         apps.map(function (app) {
           return defined(
@@ -15,7 +15,7 @@ function compose (apps, template) {
         })
       )
     },
-    update: function (models, actions) {
+    update (models, actions) {
       return composeState(
         apps.map(function (app, i) {
           return typeof actions[i] === 'undefined'
@@ -27,7 +27,7 @@ function compose (apps, template) {
         })
       )
     },
-    view: function (models, actionsUp) {
+    view (models, actionsUp) {
       var aup = function (i) {
         return function (action) {
           return actionsUp(item(action, i))
@@ -39,7 +39,7 @@ function compose (apps, template) {
         })
       )
     },
-    run: function (effects, sources) {
+    run (effects, sources) {
       if (effects == null) return
       var many = snoop.through.obj()
       var actionsSources = []
