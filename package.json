@@ -1,6 +1,6 @@
 {
   "name": "@ishiduca/snoopy-compose",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "compose snoopy apps",
   "main": "compose.js",
   "scripts": {
@@ -17,6 +17,9 @@
   },
   "standard": {
     "ignore": "t/*"
+  },
+  "repository": {
+    "url": "https://github.com/ishiduca/snoopy-compose.git"
   },
   "author": "ishiduca@gmail.com",
   "license": "Apache-2.0",
