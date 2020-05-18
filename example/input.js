@@ -6,8 +6,7 @@ module.exports = {
     return { model: '' }
   },
   update (model, action) {
-    if (action == null) return { model }
-    if (action.oninput != null) {
+    if (action && action.oninput != null) {
       return {
         model: action.oninput,
         effect: action

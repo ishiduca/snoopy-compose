@@ -5,17 +5,16 @@ module.exports = {
     return { model: null }
   },
   update (model, action) {
-    if (action == null) return { model }
-    if (action.error != null) {
+    if (action && action.error != null) {
       return { model: action.error }
     }
-    if (action.removeError != null) {
+    if (action && action.removeError != null) {
       return { model: null }
     }
     return { model }
   },
   view (model, actionsUp) {
-    if (model == null) return yo`<div></div>`
+    if (model == null) return ''
     return yo`
       <div>
         <div onclick=${e => actionsUp({ removeError: true })}>

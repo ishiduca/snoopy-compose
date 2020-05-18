@@ -6,8 +6,7 @@ module.exports = {
     return { model: 0 }
   },
   update (model, action) {
-    if (action == null) return { model }
-    if (action.sum != null) {
+    if (action && action.sum != null) {
       return {
         model: action.sum,
         effect: { removeError: true }
@@ -23,8 +22,7 @@ module.exports = {
     `
   },
   run (effect) {
-    if (effect == null) return
-    if (effect.removeError != null) {
+    if (effect && effect.removeError != null) {
       return removeError()
     }
   }
