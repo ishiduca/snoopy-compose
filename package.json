@@ -1,30 +1,40 @@
 {
   "name": "@ishiduca/snoopy-compose",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "compose snoopy apps",
   "main": "compose.js",
   "scripts": {
-    "start": "budo examples:bundle.js -- -t es2040 -t sheetify",
+    "start": "budo example:bundle.js -- -t es2040",
     "test:lint": "standard",
-    "test:node": "NODE_ENV=test tape t/*.js",
-    "test": "npm-run-all -s test:lint test:node"
+    "test:node": "NODE_ENV=test NODE_PATH=. tape t/*.js t/no-tape-run/*.js",
+    "test:browser": "NODE_ENV=test NODE_PATH=. browserify t/*js | tape-run",
+    "test": "npm-run-all -s test:lint test:node test:browser"
+  },
+  "browserify": {
+    "transform": [
+      "es2040"
+    ]
+  },
+  "standard": {
+    "ignore": "t/*"
   },
   "author": "ishiduca@gmail.com",
   "license": "Apache-2.0",
   "dependencies": {
     "@ishiduca/snoopy": "0.0.1",
-    "defined": "^1.0.0",
+    "@ishiduca/snoopy-multi": "0.0.3",
     "mississippi": "^3.0.0"
   },
   "devDependencies": {
+    "browserify": "^16.5.1",
     "budo": "^11.2.0",
-    "bulma": "^0.7.1",
     "es2040": "^1.2.6",
+    "global": "^4.4.0",
     "npm-run-all": "^4.1.2",
-    "sheetify": "^7.3.2",
     "standard": "^11.0.1",
-    "tape": "^4.9.0",
-    "xtend": "^4.0.1",
+    "tape": "^4.13.2",
+    "tape-run": "^7.0.0",
+    "xtend": "^4.0.2",
     "yo-yo": "^1.4.1"
   }
 }

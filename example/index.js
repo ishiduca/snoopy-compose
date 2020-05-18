@@ -1,0 +1,11 @@
+var document = require('global/document')
+var yo = require('yo-yo')
+var app = require('./app')
+var { start } = require('@ishiduca/snoopy')
+var root = document.createElement('div')
+
+var { views, models, actions } = start(app)
+views().on('data', rt => yo.update(root, rt))
+models().on('data', model => console.log({ model }))
+actions().on('data', action => console.log({ action }))
+document.body.appendChild(root)
