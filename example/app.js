@@ -4,22 +4,26 @@ var resultApp = require('./result')
 var errorApp = require('./error')
 var compose = require('../compose')
 
-module.exports = compose({
-  inputApp,
-  resultApp,
-  errorApp
-}, template)
+var ResultApp = compose({
+  resultApp, errorApp
+}, ({ resultApp, errorApp }) => yo`
+  <div>
+    ${resultApp}
+    ${errorApp}
+  </div>
+`)
 
-function template (views) {
-  return yo`
-    <div>
-      <header>
-        <h1>compose app example</h1>
-        <p>sum app</p>
-      </header>
-      ${views.inputApp}
-      ${views.resultApp}
-      ${views.errorApp}
+module.exports = compose({
+  inputApp, ResultApp
+}, ({ inputApp, ResultApp }) => yo`
+  <div>
+    <header>
+      <h1>compose app example</h1>
+      <p>sum app</p>
+    </header>
+    <div role="application">
+      ${inputApp}
+      ${ResultApp}
     </div>
-  `
-}
+  </div>
+`)

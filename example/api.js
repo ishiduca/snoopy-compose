@@ -19,10 +19,7 @@ module.exports = {
   }
 }
 
-function sum (params, done) {
-  var values = params.split(/\s/g)
-    .filter(Boolean)
-    .map(Number)
+function sum (values, done) {
   if (!values.length) return done(null, 0)
   if (values.some(n => isNaN(n))) {
     return done(new TypeError('contains a non-enumeric value'))

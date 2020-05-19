@@ -1,6 +1,10 @@
 var yo = require('yo-yo')
 var { sum } = require('./api')
 
+function parse (str) {
+  return str.split(' ').filter(Boolean).map(Number)
+}
+
 module.exports = {
   init () {
     return { model: '' }
@@ -9,7 +13,7 @@ module.exports = {
     if (action && action.oninput != null) {
       return {
         model: action.oninput,
-        effect: action
+        effect: { oninput: parse(action.oninput) }
       }
     }
     return { model }

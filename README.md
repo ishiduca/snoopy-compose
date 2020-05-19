@@ -31,7 +31,7 @@ views().on('data', rt => yo.update(root, rt))
 document.body.appendChild(root)
 ```
 
-```js:appForm
+```js:appForm.js
 module.exports = {
   init () { return { model: '' } },
   update (model, action) {
@@ -64,7 +64,7 @@ module.exports = {
 }
 ```
 
-```js:api
+```js:api.js
 const { through } = require('mississippi')
 const BEYOND = require('@ishiduca/snoopy-compose/beyond')
 const bey = (action) => ({ [BEYOND]: action })
@@ -90,7 +90,7 @@ module.exports = {
 }
 ```
 
-```js:appResult
+```js:appResult.js
 module.exports = {
   init () { return { model: '' } },
   update (model, action) {
@@ -115,7 +115,7 @@ module.exports = {
 }
 ```
 
-```js:appError
+```js:appError.js
 module.exports = {
   init () { return { model: null } },
   update (model, action) {
@@ -149,7 +149,10 @@ module.exports = {
 Each "small" app knows only about itself. Therefore, the "state" handled by each app is small and simple.
 On the other hand, dealing with apps other than yourself requires a rather complicated procedure.
 
-### use BEYOND action
+### Pass on actions beyond the app
+
+Use the `BEYOND` keyword to convey actios beyond your own app.
+In the `run` function, you issue an action wrapped in an object with the BEYOND property. that action will be transmitted to apps other than yourself.
 
 ```js
 const BEYOND = require('@ishiduca/snoopy-compose/beyond')
