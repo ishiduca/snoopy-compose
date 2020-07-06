@@ -1,15 +1,20 @@
-var xtend = require('xtend')
+var keys = require('own-enumerable-keys')
 var { through } = require('mississippi')
 var multi = require('@ishiduca/snoopy-multi')
 var defaultLayoutApp = require('./layout')
 var BEYOND = require('./beyond')
+
+function x (a, b) {
+  var f = o => (c, key) => { c[key] = o[key]; return c }
+  return keys(b).reduce(f(b), keys(a).reduce(f(a), {}))
+}
 
 module.exports = function compseApp (_apps, _layoutApp) {
   var layoutApp
   if (_layoutApp == null) {
     layoutApp = defaultLayoutApp
   } else if (typeof _layoutApp === 'function') {
-    layoutApp = xtend(defaultLayoutApp, { template: _layoutApp, layout: null })
+    layoutApp = x(defaultLayoutApp, { template: _layoutApp, layout: null })
   } else if (_layoutApp && (_layoutApp.template || _layoutApp.layout)) {
     layoutApp = _layoutApp
   }
@@ -20,9 +25,9 @@ module.exports = function compseApp (_apps, _layoutApp) {
     throw error
   }
 
-  var appNames = Object.keys(_apps)
+  var appNames = keys(_apps)
   var apps = appNames.reduce(
-    (apps, appName) => xtend(apps, { [appName]: multi(_apps[appName]) }),
+    (apps, appName) => x(apps, { [appName]: multi(_apps[appName]) }),
     {}
   )
 
@@ -66,7 +71,7 @@ module.exports = function compseApp (_apps, _layoutApp) {
     if (layoutApp.layout) return layoutApp.layout(apps, model, actionsUp)
 
     return layoutApp.template(
-      appNames.reduce((views, appName) => xtend(
+      appNames.reduce((views, appName) => x(
         views,
         { [appName]: apps[appName].view(model[appName], action => (
           actionsUp({ [appName]: action })
@@ -129,13 +134,13 @@ module.exports = function compseApp (_apps, _layoutApp) {
   }
 
   function composeModel (model, mdl, appName) {
-    return xtend(model, { [appName]: mdl })
+    return x(model || {}, { [appName]: mdl })
   }
 
   function composeEffect (effect, ef, appName) {
     return (
       effect != null
-        ? ef != null ? xtend(effect, { [appName]: ef }) : effect
+        ? ef != null ? x(effect, { [appName]: ef }) : effect
         : ef != null ? { [appName]: ef } : null
     )
   }
